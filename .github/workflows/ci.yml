@@ -1,0 +1,26 @@
+# this_file: .github/workflows/ci.yml
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  font-validation:
+    name: Validate variable font
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install fontTools
+        run: python -m pip install --upgrade "fonttools>=4.50"
+
+      - name: Parse fonts and check axes
+        run: python tools/validate_font.py
